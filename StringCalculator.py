@@ -1,35 +1,25 @@
 class StringCalculator:
-    def add(numbers):
+    def add(self, numbers):
         delimiter, numbers = self._extract_delimiter(numbers)
         number_list = self._split_numbers(numbers, delimiter)
-        self._validate_numbers(number_list)
         return self._sum_valid_numbers(number_list)
 
     def _extract_delimiter(self, numbers):
-        if numbers.startswith('//'):
-            parts = numbers.split('\n', 1)
-            delimiter = parts[0][2:]  # Skip the "//" part
-            return delimiter, parts[1] if len(parts) > 1 else ''
-        return ',', numbers
+        return (numbers.split('\n', 1)[0][2:], numbers.split('\n', 1)[1]) if numbers.startswith('//') else (',', numbers)
 
     def _split_numbers(self, numbers, delimiter):
         return numbers.split(delimiter)
 
-    def _validate_numbers(self, number_list):
-        self.negatives = []
-        for num in number_list:
-            if num:
-                value = int(num)
-                if value < 0:
-                    self.negatives.append(value)
-        if self.negatives:
-            raise ValueError(f"negatives not allowed: {', '.join(map(str, self.negatives))}")
-
     def _sum_valid_numbers(self, number_list):
         total = 0
         for num in number_list:
-            if num:
-                value = int(num)
-                if value <= 1000:
-                    total += value
+            total += self._process_number(num)
         return total
+
+    def _process_number(self, num):
+        if num:
+            value = int(num)
+            if value < 0:
+                raise ValueError(f"negatives not allowed: {value}")
+            return value if value <= 1000 else 0
+        return 0
