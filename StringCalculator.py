@@ -1,5 +1,5 @@
 class StringCalculator:
-    def add(self, numbers):
+    def add(numbers):
         delimiter, numbers = self._extract_delimiter(numbers)
         number_list = self._split_numbers(numbers, delimiter)
         self._validate_numbers(number_list)
